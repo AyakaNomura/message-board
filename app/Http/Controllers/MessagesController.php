@@ -13,8 +13,8 @@ class MessagesController extends Controller
     // getでmessages/にアクセスされた場合の「一覧表示処理」
     public function index()
     {
-        //更新日時順に並べる
-        $messages = Message::orderBy('updated_at', 'desc')->get();
+        //idを降順に並べる
+        $messages = Message::orderBy('id', 'desc')->get();
 
         return view('messages.index',[
             'messages' => $messages,
@@ -36,9 +36,11 @@ class MessagesController extends Controller
     {
         //required (カラッポでない) かつ max:191 (191文字を超えない) 
         $this->validate($request, [
+            'title' => 'required|max:191',   // 追加
             'content' => 'required|max:191',
             ]);
         $message = new Message;
+        $message->title = $request->title;
         $message->content = $request->content;
         $message->save();
         
@@ -70,9 +72,11 @@ class MessagesController extends Controller
     {
         //required (カラッポでない) かつ max:191 (191文字を超えない) 
         $this->validate($request, [
+            'title' => 'required|max:191', 
             'content' => 'required|max:191',
             ]);
         $message = Message::find($id);
+        $message->title = $request->title;
         $message->content = $request->content;
         $message->save();
         
