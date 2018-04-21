@@ -5,6 +5,7 @@
         <title>MessageBoard</title>
     </head>
     <body>
-        @yield('content');
+        @include('commons.error_message.blade.php');
+        @yield('content')
     </body>
 </html>

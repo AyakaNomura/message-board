@@ -13,8 +13,9 @@ class MessagesController extends Controller
     // getでmessages/にアクセスされた場合の「一覧表示処理」
     public function index()
     {
-        $messages = Message::all();
-        
+        //更新日時順に並べる
+        $messages = Message::orderBy('updated_at', 'desc')->get();
+
         return view('messages.index',[
             'messages' => $messages,
             ]);
@@ -33,6 +34,10 @@ class MessagesController extends Controller
     // postでmessages/にアクセスされた場合の「新規登録処理」
     public function store(Request $request)
     {
+        //required (カラッポでない) かつ max:191 (191文字を超えない) 
+        $this->validate($request, [
+            'content' => 'required|max:191',
+            ]);
         $message = new Message;
         $message->content = $request->content;
         $message->save();
@@ -61,8 +66,12 @@ class MessagesController extends Controller
     }
 
     // putまたはpatchでmessages/idにアクセスされた場合の「更新処理」
-    public function update($id)
+    public function update(Request $request, $id)
     {
+        //required (カラッポでない) かつ max:191 (191文字を超えない) 
+        $this->validate($request, [
+            'content' => 'required|max:191',
+            ]);
         $message = Message::find($id);
         $message->content = $request->content;
         $message->save();
