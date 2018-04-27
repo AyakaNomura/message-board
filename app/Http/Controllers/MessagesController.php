@@ -14,7 +14,7 @@ class MessagesController extends Controller
     public function index()
     {
         //idを降順に並べる
-        $messages = Message::orderBy('id', 'desc')->get();
+        $messages = Message::all();
 
         return view('messages.index',[
             'messages' => $messages,
